@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+  Trang chuyển tiếp đăng nhập Trimble cho link /exec (Y59, docs/TRIMBLE.md 7.1).
+  Vì sao: ô Redirect URL ở Trimble Developer Console giới hạn 100 ký tự, link /exec của Apps Script dài 114 ký tự.
+  Trang này (URL ngắn, vd https://<tài khoản>.github.io/tc/) nhận ?code=...&state=... từ Trimble rồi chuyển nguyên sang /exec.
+  Không chứa bí mật: `code` vô dụng khi không có Client Secret (chỉ máy chủ Apps Script giữ), `state` gắn với phiên app.
+  Cách dùng:
+    1. Thay https://script.google.com/macros/s/AKfycbwj345TVSTVpnCdD1obQEjFudwZLKyyZxdEw7ig447-Bs8RHiSMDy2dFejedbR0gJuosw/exec dưới đây bằng link /exec đầy đủ (https://script.google.com/macros/s/<mã triển khai>/exec).
+    2. Đưa file lên hosting tĩnh (GitHub Pages...) → có URL ngắn ≤ 100 ký tự.
+    3. Trimble Developer Console: thêm URL đó vào Redirect URLs (giữ dòng /dev).
+    4. Apps Script → Project Settings → Script Properties: TRIMBLE_REDIRECT_URI = đúng URL đó (không thêm ?, # hay / thừa so với dòng đã đăng ký).
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Kết nối Trimble - IDD</title>
+</head>
+<body style="font-family:system-ui,sans-serif;background:#f5f7fb;margin:0">
+<div id="o" style="max-width:440px;margin:48px auto;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:16px;font-size:14px;color:#1e293b">Đang chuyển về app…</div>
+<script>
+  var DICH = 'https://script.google.com/macros/s/AKfycbwj345TVSTVpnCdD1obQEjFudwZLKyyZxdEw7ig447-Bs8RHiSMDy2dFejedbR0gJuosw/exec'
+  var q = location.search
+  var ok = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(DICH)
+  var coMa = /[?&]state=/.test(q) && /[?&](code|error)=/.test(q)
+  if (ok && coMa) location.replace(DICH + q)
+  else document.getElementById('o').textContent = ok ? 'Không có mã đăng nhập Trimble - mở lại app và bấm Kết nối Trimble.' : 'Trang chuyển tiếp chưa cài link /exec (https://script.google.com/macros/s/AKfycbwj345TVSTVpnCdD1obQEjFudwZLKyyZxdEw7ig447-Bs8RHiSMDy2dFejedbR0gJuosw/exec) - báo admin.'
+</script>
+</body>
+</html>
